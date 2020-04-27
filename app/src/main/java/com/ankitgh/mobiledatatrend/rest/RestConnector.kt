@@ -1,14 +1,17 @@
 package com.ankitgh.mobiledatatrend.rest
 
 import android.util.Log
+import com.ankitgh.mobiledatatrend.BASE_URL
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Class to instantiate retrofit and provide api interface
+ */
 object RestConnector {
-    private const val BASE_URL: String = "https://data.gov.sg/"
     private val TAG: String = RestConnector::class.java.simpleName
 
     val instance: RecordsDataApi by lazy {
@@ -35,5 +38,4 @@ object RestConnector {
             .addInterceptor(loggingInterceptor)
             .build()
     }
-
 }

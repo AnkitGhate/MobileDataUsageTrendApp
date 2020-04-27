@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MobileDataTrend</string>
+    <string name="no_data_available">No Data Available</string>
+    <string name="http_exception_message">There is a problem refreshing data. [ ERROR - %s} : %s}</string>
 </resources>

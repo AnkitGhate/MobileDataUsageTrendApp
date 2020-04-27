@@ -3,6 +3,7 @@ package com.ankitgh.mobiledatatrend.database
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
@@ -14,8 +15,8 @@ interface RecordDao {
     fun getAllRecords(): LiveData<List<Record>>
 
     @Query("SELECT * FROM record_table LIMIT 1")
-    fun checkifAnyRecord(): Record?
+    fun checkIfAnyRecordAvailable(): Record?
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllRecords(record: List<Record>)
 }

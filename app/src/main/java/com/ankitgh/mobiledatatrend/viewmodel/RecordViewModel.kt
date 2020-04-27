@@ -2,8 +2,8 @@ package com.ankitgh.mobiledatatrend.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import com.ankitgh.mobiledatatrend.database.Record
+import com.ankitgh.mobiledatatrend.repository.ApiResponse
 import com.ankitgh.mobiledatatrend.repository.RecordRepository
 import com.ankitgh.mobiledatatrend.rest.model.RecordYear
 
@@ -15,7 +15,7 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
         recordRepository = RecordRepository(application)
     }
 
-    fun getAllRecordsFromRepo(): LiveData<List<Record>>? {
+    fun getAllRecordsFromRepo(): ApiResponse {
         return recordRepository.getAllRecordsFromDB()
     }
 
@@ -37,7 +37,7 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     private fun mapQuartersToYear(recordList: List<Record?>): HashMap<Int, ArrayList<RecordYear>> {
-        val customMap: HashMap<Int, ArrayList<RecordYear>> = HashMap()
+        val quatersToYearyHashMap: HashMap<Int, ArrayList<RecordYear>> = HashMap()
         var temp: List<String>
         var tempRecordYearList: ArrayList<RecordYear>
 
@@ -45,34 +45,34 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
             if (record != null) {
                 temp = record.quarter.split("-")
                 if (record.id == 1) {
-                    tempRecordYearList = arrayListOf(RecordYear(temp.get(1), record.volumeOfMobileData))
-                    customMap[temp.get(0).toInt()] = tempRecordYearList
+                    tempRecordYearList = arrayListOf(RecordYear(temp[1], record.volumeOfMobileData))
+                    quatersToYearyHashMap[temp[0].toInt()] = tempRecordYearList
                 } else {
                     val previousIndex = record.id - 2
-                    val previousYear = recordList.get(previousIndex)?.quarter?.split("-")?.get(0)
+                    val previousYear = recordList[previousIndex].quarter?.split("-")?.get(0)
 
-                    if (compareValues(previousYear, temp.get(0)) == 0) {
+                    if (compareValues(previousYear, temp[0]) == 0) {
                         if (previousYear != null) {
-                            customMap.get(previousYear.toInt())?.add(RecordYear(temp.get(1), record.volumeOfMobileData))
+                            quatersToYearyHashMap[previousYear.toInt()]?.add(RecordYear(temp[1], record.volumeOfMobileData))
                         }
                     } else {
                         tempRecordYearList = arrayListOf(RecordYear(temp.get(1), record.volumeOfMobileData))
-                        customMap[temp.get(0).toInt()] = tempRecordYearList
+                        quatersToYearyHashMap[temp[0].toInt()] = tempRecordYearList
                     }
                 }
             }
         }
-        customMap.toSortedMap()
-        return customMap
+        quatersToYearyHashMap.toSortedMap()
+        return quatersToYearyHashMap
     }
 
-    private fun wasDipInDataUsageInYear(arrayList: ArrayList<RecordYear>): Boolean {
+    fun wasDipInDataUsageInYear(arrayList: ArrayList<RecordYear>): Boolean {
         val sorted: List<Double> = arrayList.map { it.dataUsage }.sorted()
         val orignal: List<Double> = arrayList.map { it.dataUsage }
-        return orignal.equals(sorted)
+        return orignal == sorted
     }
 
-    private fun getTotalUsageInYear(arrayList: ArrayList<RecordYear>): Double {
+    fun getTotalUsageInYear(arrayList: ArrayList<RecordYear>): Double {
         return arrayList.map { it.dataUsage }.sum()
     }
 }
