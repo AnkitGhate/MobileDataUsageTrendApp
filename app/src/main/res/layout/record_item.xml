@@ -36,6 +36,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:src="@drawable/sharp_trending_down_black_18dp" />
 
     </RelativeLayout>
