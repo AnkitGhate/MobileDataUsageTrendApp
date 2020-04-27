@@ -20,7 +20,8 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val recordViewModel: RecordViewModel = ViewModelProvider(this).get(RecordViewModel::class.java)
+        val recordViewModel: RecordViewModel =
+            ViewModelProvider(this).get(RecordViewModel::class.java)
         observeData(recordViewModel)
     }
 
@@ -46,18 +47,24 @@ class MainActivity : BaseActivity() {
                     if (recordsList != null && recordsList.isNotEmpty()) {
                         noDataText.visibility = View.GONE
                         recyclerview.visibility = View.VISIBLE
-                        recordAdapter.recordsList = recordViewModel.getSortedRecordsPerYearList(recordsList)
+                        recordAdapter.recordsList =
+                            recordViewModel.getSortedRecordsPerYearList(recordsList)
                         recordAdapter.notifyDataSetChanged()
-                        Log.d(TAG, "recordViewModel.getAllRecordsFromRepo() -> Change in Data - Observer on MainActivity invoked.  : ${recordsList.size}")
+                        Log.d(TAG,"recordViewModel.getAllRecordsFromRepo() -> Change in Data - Observer on MainActivity invoked.  : ${recordsList.size}"
+                        )
                     }
                 })
     }
 
     private fun updateUi(message: String?, apiResponse: ApiResponse) {
-        if (apiResponse.data?.value == null) {
+        if (apiResponse.apiError.value != null) {
             recyclerview.visibility = View.GONE
             noDataText.visibility = View.VISIBLE
+            Snackbar.make(
+                rootView,
+                "There is a problem refreshing data. [ ERROR : ${message.toString()}]",
+                Snackbar.LENGTH_LONG
+            ).show()
         }
-        Snackbar.make(rootView, "There is a problem refreshing data. [ ERROR : ${message.toString()}]", Snackbar.LENGTH_LONG).show()
     }
 }

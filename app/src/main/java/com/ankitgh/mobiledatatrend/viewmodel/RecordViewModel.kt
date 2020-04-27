@@ -49,7 +49,7 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
                     quatersToYearyHashMap[temp[0].toInt()] = tempRecordYearList
                 } else {
                     val previousIndex = record.id - 2
-                    val previousYear = recordList[previousIndex].quarter?.split("-")?.get(0)
+                    val previousYear = recordList[previousIndex]?.quarter?.split("-")?.get(0)
 
                     if (compareValues(previousYear, temp[0]) == 0) {
                         if (previousYear != null) {
