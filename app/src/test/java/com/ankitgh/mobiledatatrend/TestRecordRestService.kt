@@ -1,6 +1,5 @@
 package com.ankitgh.mobiledatatrend
 
-import android.util.Log
 import com.ankitgh.mobiledatatrend.repository.ApiResponse
 import com.ankitgh.mobiledatatrend.repository.RecordRepository
 import com.ankitgh.mobiledatatrend.rest.RecordsDataApi
@@ -18,10 +17,10 @@ import org.junit.Test
 import org.mockito.Mockito
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import java.net.HttpURLConnection
 
 class TestRecordRestService {
-    val TAG: String = TestRecordRestService::class.java.simpleName
     val testScope = CoroutineScope(Dispatchers.Default)
     val apiResponse: ApiResponse = mock()
     val recordRepository: RecordRepository = Mockito.mock(RecordRepository::class.java)
@@ -33,7 +32,7 @@ class TestRecordRestService {
         val gson = GsonBuilder()
             .setLenient()
             .create()
-        Log.d(TAG, "Creating new instance of Retrofit")
+        Timber.d("Creating new instance of Retrofit")
 
         Retrofit.Builder()
             .baseUrl(mockWebServer.url("/"))

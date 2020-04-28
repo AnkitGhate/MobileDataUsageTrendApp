@@ -20,6 +20,7 @@ class RecordViewModelInstrumentedTest {
     private lateinit var recordViewModel: RecordViewModel
     private lateinit var recordsDatabase: RecordsDatabase
     private var listOfRecordYear: MutableLiveData<List<Record>> = MutableLiveData()
+    val repoScope = CoroutineScope(Dispatchers.Default)
 
     @get:Rule
     var instantTaskExecutionRule = InstantTaskExecutorRule()
@@ -27,10 +28,8 @@ class RecordViewModelInstrumentedTest {
     @Before
     fun setUp() {
         val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
-        val repoScope = CoroutineScope(Dispatchers.Default)
         recordViewModel = RecordViewModel(context.applicationContext as Application)
         recordsDatabase = Room.inMemoryDatabaseBuilder(context, RecordsDatabase::class.java).build()
-        //listOfRecordYear.value = recordsPerQuarter
         repoScope.launch {
             addDummyDataToDB(recordsDatabase)
         }
@@ -42,24 +41,12 @@ class RecordViewModelInstrumentedTest {
     }
 
     @Test
-    fun getAllRecordsFromRepoTest() {
-        val firstdata: MutableLiveData<List<Record>> = listOfRecordYear
-        //val secondDate: MutableLiveData<List<Record>> = recordViewModel.getAllRecordsFromRepo(this) as MutableLiveData<List<Record>>
-
-        //Assert.assertEquals(firstdata, secondDate)
-    }
-
-    @Test
     fun getSortedRecordsPerYearListTest() {
         val quarterlyRecordsList: ArrayList<Record> = ArrayList()
         quarterlyRecordsList.addAll(quaterlyRecords)
-        Assert.assertEquals(yearlyRecords, recordViewModel.getSortedRecordsPerYearList(quarterlyRecordsList))
-    }
+        repoScope.launch {
+            Assert.assertEquals(yearlyRecords, recordViewModel.getSortedRecordsPerYearList(quarterlyRecordsList))
 
-    @Test
-    fun getTotalUsageInYearTest() {
-        val listOfRecordYear = ArrayList<RecordYear>(yearlyRecords)
-        Assert.assertTrue(listOfDataUsage.sum() == recordViewModel.getTotalUsageInYear(listOfRecordYear))
+        }
     }
-
 }

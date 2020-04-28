@@ -1,8 +1,8 @@
 package com.ankitgh.mobiledatatrend
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,9 +13,13 @@ import com.ankitgh.mobiledatatrend.ui.RecordAdapter
 import com.ankitgh.mobiledatatrend.viewmodel.RecordViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainActivity : BaseActivity() {
-    private val TAG: String = MainActivity::class.java.simpleName
+    private val mainScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,34 +40,49 @@ class MainActivity : BaseActivity() {
 
         val apiResponse = recordViewModel.getAllRecordsFromRepo()
 
+        //error observer
         apiResponse.apiError.observe(this, Observer {
-            updateUi(it, apiResponse)
+            showErrorInSnackBar(it, apiResponse)
         })
 
+        //data observer
         apiResponse.data
             ?.observe(this,
                 Observer<List<Record?>?> { recordsList ->
                     if (recordsList != null && recordsList.isNotEmpty()) {
-                        noDataText.visibility = View.GONE
-                        recyclerview.visibility = View.VISIBLE
-                        recordAdapter.recordsList =
-                            recordViewModel.getSortedRecordsPerYearList(recordsList)
-                        recordAdapter.notifyDataSetChanged()
-                        Log.d(TAG,"recordViewModel.getAllRecordsFromRepo() -> Change in Data - Observer on MainActivity invoked.  : ${recordsList.size}"
+                        showProgress(false, cyclicProgress)
+                        mainScope.launch {
+                            recordAdapter.recordsList =
+                                recordViewModel.getSortedRecordsPerYearList(recordsList)
+                            recordAdapter.notifyDataSetChanged()
+                        }
+                        Timber.d(
+                            "recordViewModel.getAllRecordsFromRepo() -> Change in Data - Observer on MainActivity invoked.  : ${recordsList.size}"
                         )
                     }
                 })
     }
 
-    private fun updateUi(message: String?, apiResponse: ApiResponse) {
+    private fun showErrorInSnackBar(message: String?, apiResponse: ApiResponse) {
         if (apiResponse.apiError.value != null) {
-            recyclerview.visibility = View.GONE
-            noDataText.visibility = View.VISIBLE
+            if (apiResponse.data?.value.isNullOrEmpty()) {
+                noDataText.visibility = View.VISIBLE
+            } else {
+                noDataText.visibility = View.GONE
+            }
             Snackbar.make(
                 rootView,
-                "There is a problem refreshing data. [ ERROR : ${message.toString()}]",
+                message.toString(),
                 Snackbar.LENGTH_LONG
             ).show()
+            showProgress(false, cyclicProgress)
+        }
+    }
+
+    private fun showProgress(status: Boolean, cyclicProgress: ProgressBar) {
+        when (status) {
+            true -> cyclicProgress.visibility = View.VISIBLE
+            false -> cyclicProgress.visibility = View.GONE
         }
     }
 }

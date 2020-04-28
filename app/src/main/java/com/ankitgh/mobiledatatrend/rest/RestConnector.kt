@@ -1,18 +1,17 @@
 package com.ankitgh.mobiledatatrend.rest
 
-import android.util.Log
 import com.ankitgh.mobiledatatrend.BASE_URL
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 
 /**
  * Class to instantiate retrofit and provide api interface
  */
 object RestConnector {
-    private val TAG: String = RestConnector::class.java.simpleName
 
     val instance: RecordsDataApi by lazy {
         val gson = GsonBuilder()
@@ -25,7 +24,7 @@ object RestConnector {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
-        Log.d(TAG, "Creating new instance of Retrofit")
+        Timber.d("Creating new instance of Retrofit")
 
         retrofit.create(RecordsDataApi::class.java)
     }
