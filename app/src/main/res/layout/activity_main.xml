@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/no_data_available"
+        android:textColor="@android:color/white"
         android:textSize="20sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerview"
