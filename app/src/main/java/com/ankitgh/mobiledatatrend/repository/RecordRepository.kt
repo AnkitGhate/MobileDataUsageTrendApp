@@ -1,6 +1,5 @@
 package com.ankitgh.mobiledatatrend.repository
 
-import android.annotation.SuppressLint
 import android.app.Application
 import com.ankitgh.mobiledatatrend.database.Record
 import com.ankitgh.mobiledatatrend.database.RecordDao
@@ -25,7 +24,6 @@ import timber.log.Timber
  * on availability as to which datasource to choose and propagate
  * data and errors to ViewModels accordingly
  */
-@SuppressLint("LogConditional")
 class RecordRepository(application: Application) {
     private var recordDao: RecordDao
     private var apiResponse: ApiResponse = ApiResponse()
@@ -151,13 +149,13 @@ class RecordRepository(application: Application) {
         return quatersToYearyHashMap
     }
 
-    fun wasDipInDataUsageInYear(arrayList: ArrayList<RecordYear>): Boolean {
+    private fun wasDipInDataUsageInYear(arrayList: ArrayList<RecordYear>): Boolean {
         val sorted: List<Double> = arrayList.map { it.dataUsage }.sorted()
-        val orignal: List<Double> = arrayList.map { it.dataUsage }
-        return orignal == sorted
+        val original: List<Double> = arrayList.map { it.dataUsage }
+        return original == sorted
     }
 
-    fun getTotalUsageInYear(arrayList: ArrayList<RecordYear>): Double {
+    private fun getTotalUsageInYear(arrayList: ArrayList<RecordYear>): Double {
         return arrayList.map { it.dataUsage }.sum()
     }
 }

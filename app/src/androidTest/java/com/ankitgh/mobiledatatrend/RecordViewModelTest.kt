@@ -8,14 +8,13 @@ import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import com.ankitgh.mobiledatatrend.database.Record
 import com.ankitgh.mobiledatatrend.database.RecordsDatabase
-import com.ankitgh.mobiledatatrend.rest.model.RecordYear
 import com.ankitgh.mobiledatatrend.viewmodel.RecordViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.junit.*
 
-class RecordViewModelInstrumentedTest {
+class RecordViewModelTest {
 
     private lateinit var recordViewModel: RecordViewModel
     private lateinit var recordsDatabase: RecordsDatabase

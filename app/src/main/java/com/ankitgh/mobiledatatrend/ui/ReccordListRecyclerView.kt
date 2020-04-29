@@ -11,6 +11,10 @@ import com.ankitgh.mobiledatatrend.R
 import com.ankitgh.mobiledatatrend.rest.model.RecordYear
 import kotlinx.android.synthetic.main.record_item.view.*
 
+/**
+ * Adapter class used to bind data and view for recycler view in
+ * UI package-> MainActivity.kt
+ */
 class RecordAdapter : RecyclerView.Adapter<RecordAdapter.RecordViewHolder>() {
     var recordsList: ArrayList<RecordYear> = ArrayList()
 

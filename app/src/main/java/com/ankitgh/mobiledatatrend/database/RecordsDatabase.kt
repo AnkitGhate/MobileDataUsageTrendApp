@@ -7,7 +7,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import timber.log.Timber
 
-@SuppressLint("SyntheticAccessor")
+/**
+ * Database class to init ROOM and return instance
+ */
 @Database(entities = [Record::class], version = 1)
 abstract class RecordsDatabase : RoomDatabase() {
 

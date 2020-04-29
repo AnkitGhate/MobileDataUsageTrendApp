@@ -15,10 +15,19 @@ class RecordViewModel(application: Application) : AndroidViewModel(application) 
         recordRepository = RecordRepository(application)
     }
 
+    /**
+     * Gets called from Activity and fetches records from database
+     * Note: DB by this time will be updated from network data and if not will fetch from
+     * database.
+     */
     fun getAllRecordsFromRepo(): ApiResponse {
         return recordRepository.getAllRecordsFromDB()
     }
 
+    /**
+     * Takes a list of records which have quaters and are not mapped to Year and returns
+     * a mapped list of Records which are sorted based on Year.
+     */
     suspend fun getSortedRecordsPerYearList(recordsList: List<Record?>): ArrayList<RecordYear> {
         return recordRepository.sortRecordsBasedOnYear(recordsList)
     }

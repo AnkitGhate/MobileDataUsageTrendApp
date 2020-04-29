@@ -12,6 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#720D5D"
         android:padding="8dp">
 
         <TextView
@@ -19,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="25sp"
+            android:textColor="@android:color/white"
             tools:text="Year" />
 
         <TextView
@@ -27,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/year_tv"
             android:textSize="15sp"
+            android:textColor="@android:color/white"
             tools:text="Total Data Usage is 100Mb" />
 
         <ImageView
