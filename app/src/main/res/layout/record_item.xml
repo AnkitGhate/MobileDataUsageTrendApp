@@ -1,47 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/record_item"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="8dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginBottom="8dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="recordYearBindingVariable"
+            type="com.ankitgh.mobiledatatrend.rest.model.RecordYear" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/record_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/item_bg_color"
-        android:padding="8dp">
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp">
 
-        <TextView
-            android:id="@+id/year_tv"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="25sp"
-            tools:text="Year" />
+            android:background="@color/item_bg_color"
+            android:padding="8dp">
 
-        <TextView
-            android:id="@+id/mobile_data_usage_total_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/year_tv"
-            android:textColor="@android:color/white"
-            android:textSize="15sp"
-            tools:text="Total Data Usage is 100Mb" />
+            <TextView
+                android:id="@+id/year_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{recordYearBindingVariable.quater}"
+                android:textColor="@android:color/white"
+                android:textSize="25sp"
+                tools:text="Year" />
 
-        <ImageView
-            android:id="@+id/low_data_consmption_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/sharp_trending_down_black_18dp" />
+            <TextView
+                android:id="@+id/mobile_data_usage_total_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/year_tv"
+                android:text="@{recordYearBindingVariable.convertToBigDecimal(recordYearBindingVariable.dataUsage)}"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                tools:text="Total Data Usage is 100Mb" />
 
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/low_data_consmption_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/sharp_trending_down_black_18dp"
+                android:visibility="@{recordYearBindingVariable.dipInUsage? View.GONE : View.VISIBLE}" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

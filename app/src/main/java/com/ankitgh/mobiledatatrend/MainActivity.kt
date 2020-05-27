@@ -23,15 +23,15 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val recordViewModel: RecordViewModel =
-            ViewModelProvider(this).get(RecordViewModel::class.java)
+        val recordViewModel: RecordViewModel = ViewModelProvider(this).get(RecordViewModel::class.java)
         observeData(recordViewModel)
     }
 
     override fun getLayoutId(): Int = R.layout.activity_main
 
     private fun observeData(recordViewModel: RecordViewModel) {
-        val recyclerView: RecyclerView = recyclerview
+
+        val recyclerView: RecyclerView = mainLayoutViewBinding.recyclerview
         val recordAdapter = RecordAdapter()
 
         recyclerView.layoutManager = LinearLayoutManager(this)

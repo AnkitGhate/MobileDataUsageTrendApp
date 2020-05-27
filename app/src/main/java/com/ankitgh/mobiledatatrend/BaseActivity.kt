@@ -2,6 +2,8 @@ package com.ankitgh.mobiledatatrend
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.ankitgh.mobiledatatrend.databinding.ActivityMainBinding
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -11,10 +13,14 @@ import timber.log.Timber.DebugTree
  */
 abstract class BaseActivity : AppCompatActivity() {
 
+    lateinit var mainLayoutViewBinding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(getLayoutId())
+        mainLayoutViewBinding = DataBindingUtil.setContentView<ActivityMainBinding>(this, getLayoutId())
         Timber.plant(DebugTree())
     }
+
     abstract fun getLayoutId(): Int
+
 }
